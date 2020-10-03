@@ -34,7 +34,7 @@ stages:
 - stage: ProdDeploy
   dependsOn:
   - DevDeploy
-   - QADeploy
+  - QADeploy
   jobs:
   - job: ProdDeployJob
     steps: 
