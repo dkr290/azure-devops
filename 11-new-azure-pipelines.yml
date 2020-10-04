@@ -34,6 +34,7 @@ stages:
             Contents: |
               **/.*yaml
               **/.*tf
+              **/.*yml
             TargetFolder: '$(Build.ArtifactStagingDirectory)'
         - bash: echo ls -R $(Build.ArtifactStagingDirectory)
         - task: PublishBuildArtifacts@1
