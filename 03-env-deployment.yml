@@ -34,7 +34,7 @@ stages:
       runOnce:
         deploy:
           steps:
-          - script: echo deploy to Qa
+          - script: echo deploy to QA
 
 
 
