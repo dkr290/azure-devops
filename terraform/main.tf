@@ -7,7 +7,7 @@ provider "azurerm" {
 }
 
 # Create a resource group if it doesn't exist
-resource "azurerm_resource_group" "terraformrg" {
+resource "azurerm_resource_group" "myterraformgroup" {
     name     = var.resource_group
     location = var.location
 
@@ -21,7 +21,7 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
     name                = "Vnet1"
     address_space       = ["10.0.0.0/16"]
     location            = var.location
-    resource_group_name = var.resource_group
+    resource_group_name = azurerm_resource_group.myterraformgroup.name
 
     tags = {
         environment = "Demo"
@@ -31,8 +31,8 @@ resource "azurerm_virtual_network" "myterraformnetwork" {
 # Create subnet
 resource "azurerm_subnet" "myterraformsubnet" {
     name                 = "subnet1"
-    resource_group_name  = var.resource_group
-    virtual_network_name = var.resource_group
+    resource_group_name  = azurerm_resource_group.myterraformgroup.name
+    virtual_network_name = azurerm_resource_group.myterraformgroup.name
     address_prefixes       = ["10.0.1.0/24"]
 }
 
@@ -40,7 +40,7 @@ resource "azurerm_subnet" "myterraformsubnet" {
 resource "azurerm_public_ip" "myterraformpublicip" {
     name                         = var.pub_ip
     location                     = var.location
-    resource_group_name          = var.resource_group
+    resource_group_name          = azurerm_resource_group.myterraformgroup.name
     allocation_method            = "Dynamic"
 
     tags = {
@@ -52,7 +52,7 @@ resource "azurerm_public_ip" "myterraformpublicip" {
 resource "azurerm_network_security_group" "myterraformnsg" {
     name                = "SG01"
     location            = var.location
-    resource_group_name = var.resource_group
+    resource_group_name = azurerm_resource_group.myterraformgroup.name
 
     security_rule {
         name                       = "SSH"
@@ -75,7 +75,7 @@ resource "azurerm_network_security_group" "myterraformnsg" {
 resource "azurerm_network_interface" "myterraformnic" {
     name                      = var.net_interface
     location                  = var.location
-    resource_group_name       = var.resource_group
+    resource_group_name       = azurerm_resource_group.myterraformgroup.name
 
     ip_configuration {
         name                          = "myNicConfiguration"
@@ -99,7 +99,7 @@ resource "azurerm_network_interface_security_group_association" "example" {
 resource "random_id" "randomId" {
     keepers = {
         # Generate a new ID only when a new resource group is defined
-        resource_group = var.resource_group
+        resource_group = azurerm_resource_group.myterraformgroup.name
     }
 
     byte_length = 8
@@ -108,7 +108,7 @@ resource "random_id" "randomId" {
 # Create storage account for boot diagnostics
 resource "azurerm_storage_account" "mystorageaccount" {
     name                        = "diag${random_id.randomId.hex}"
-    resource_group_name         = var.resource_group
+    resource_group_name         = azurerm_resource_group.myterraformgroup.name
     location                    = var.location
     account_tier                = "Standard"
     account_replication_type    = "LRS"
@@ -129,7 +129,7 @@ output "tls_private_key" { value = tls_private_key.example_ssh.private_key_pem }
 resource "azurerm_linux_virtual_machine" "myterraformvm" {
     name                  = var.vm_name
     location              = var.location
-    resource_group_name   = var.resource_group
+    resource_group_name   = azurerm_resource_group.myterraformgroup.name
     network_interface_ids = [azurerm_network_interface.myterraformnic.id]
     size                  =  var.vm_size
 
