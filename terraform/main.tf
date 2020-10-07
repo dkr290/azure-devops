@@ -134,9 +134,9 @@ resource "azurerm_linux_virtual_machine" "myterraformvm" {
     size                  =  var.vm_size
 
     os_disk {
-        name              = vm.os_disk_name
+        name              = var.os_disk_name
         caching           = "ReadWrite"
-        storage_account_type = vm.os_disk_type
+        storage_account_type = var.os_disk_type
     }
 
     source_image_reference {
