@@ -33,7 +33,7 @@ steps:
     allowTelemetryCollection: false
 - task: TerraformCLI@0
   inputs:
-    command: 'apply'
+    command: 'destroy'
     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
     environmentServiceName: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
     allowTelemetryCollection: false
