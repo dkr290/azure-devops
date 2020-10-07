@@ -26,4 +26,8 @@ steps:
     workingDirectory: '$(System.DefaultWorkingDirectory)/terraform'
     backendType: 'azurerm'
     backendServiceArm: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
+    backendAzureRmStorageAccountName: 'terraform-backaend-rg'
+    backendAzureRmResourceGroupLocation: 'eastus'
+    backendAzureRmStorageAccountName: 'storageaccountdani1980'
+    backendAzureRmContainerName: 'storageaccountdanicontainer'
     allowTelemetryCollection: false
