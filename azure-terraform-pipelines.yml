@@ -27,7 +27,7 @@ steps:
     backendType: 'azurerm'
     backendServiceArm: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
     backendAzureRmResourceGroupName: 'terraform-backaend-rg'
-    backendAzureRmResourceGroupLocation: 'eastus'
     backendAzureRmStorageAccountName: 'storageaccountdani1980'
     backendAzureRmContainerName: 'storageaccountdanicontainer'
+    backendAzureRmKey: 'kubernetes-dev.tfstate'
     allowTelemetryCollection: false
