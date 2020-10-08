@@ -24,5 +24,4 @@ steps:
       python -m pip install --upgrade pip
       pip install setup
       pip install -r src/flask-app/requirements.txt
-    workingDirectory: $(projectRoot)
-    displayName: "Install requirements"
+    workingDirectory: '$(System.DefaultWorkingDirectory)'
