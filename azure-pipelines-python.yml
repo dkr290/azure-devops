@@ -20,7 +20,9 @@ steps:
     targetType: 'inline'
     script: |
       python -m venv venv
-       source venv/bin/activate
-        python -m pip install --upgrade pip
-        pip install setup
-        pip install -r src/flask-app/requirements.txt
+      source venv/bin/activate
+      python -m pip install --upgrade pip
+      pip install setup
+      pip install -r src/flask-app/requirements.txt
+    workingDirectory: $(projectRoot)
+    displayName: "Install requirements"
