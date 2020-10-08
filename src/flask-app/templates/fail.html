@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block title %} Error page {%endblock%}
+{% block content %}
+
+
+
+      <div class="container">
+
+
+        <h1>Error...</h1>
+        <div class="alert alert-warning alert-dismissible fade show" role="alert">
+          <strong>{{ error_statement }}</strong> You should check in on some of those fields below.
+          <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        
+        
+       <br/>
+       <form action="/form" method="POST">
+        <div class="form-group">
+          
+          <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" 
+               placeholder="First Name" name='first_name' value="{{ first_name }}">
+         
+        </div>
+        <div class="form-group">
+          
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp"
+            placeholder="Last Name" name='last_name' value="{{ last_name }}">
+           
+          </div>
+          <div class="form-group">
+          
+            <input type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" 
+            placeholder="Email Address" name="email" value="{{ email }}">
+           
+          </div>
+        
+        <br/>
+        <button type="submit" class="btn btn-secondary">Submit</button>
+      </form>
+      </div>
+    
+
+  {% endblock %}
