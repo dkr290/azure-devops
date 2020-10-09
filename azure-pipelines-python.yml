@@ -8,7 +8,7 @@ trigger:
 stages:
 - stage: Build
   jobs:
-  - job: Build Flask app
+  - job: Build_Flask_app
 
     pool:
       vmImage: 'ubuntu-latest'
