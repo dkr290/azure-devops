@@ -18,7 +18,7 @@ stages:
     steps:
     - task: UsePythonVersion@0
       inputs:
-        versionSpec: '3.x'
+        versionSpec: '$(pythonVersion)'
         addToPath: true
         architecture: 'x64'
     - task: Bash@3
@@ -43,3 +43,25 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)/flask-app$(Build.BuildId).zip'
         ArtifactName: 'drop'
         publishLocation: 'Container'
+- stage: DeployToDev
+  jobs:
+  - deployment: DeploymentJobDev
+    environment: Development
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: UsePythonVersion@0
+            inputs:
+              versionSpec: '$(pythonVersion)'
+              addToPath: true
+              architecture: 'x64'
+          - task: AzureWebApp@1
+            displayName: 'Deploy Azure Web App : {{ webAppName }}'
+            inputs:
+              azureSubscription: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
+              appType: 'webAppLinux'
+              appName: '$(webAppName)'
+              package: '$(Build.ArtifactStagingDirectory)/flask-app$(Build.BuildId).zip'
+              startUpCommand: 'gunicorn --bind=0.0.0.0 --workers=4 app:app'
+    
