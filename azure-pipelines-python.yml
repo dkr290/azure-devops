@@ -62,6 +62,6 @@ stages:
               azureSubscription: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
               appType: 'webAppLinux'
               appName: '$(webAppName)'
-              package: '$(Build.ArtifactStagingDirectory)/flask-app$(Build.BuildId).zip'
+              package: '$(Pipeline.Workspace)/drop/flask-app$(Build.BuildId).zip'
               startUpCommand: 'gunicorn --bind=0.0.0.0 --workers=4 app:app'
     
