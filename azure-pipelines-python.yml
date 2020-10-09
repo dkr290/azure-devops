@@ -25,3 +25,15 @@ steps:
       pip install setup
       pip install -r src/flask-app/requirements.txt
     workingDirectory: '$(System.DefaultWorkingDirectory)'
+- task: ArchiveFiles@2
+  inputs:
+    rootFolderOrFile: '$(Build.SourcesDirectory)'
+    includeRootFolder: false
+    archiveType: 'zip'
+    archiveFile: '$(Build.ArtifactStagingDirectory)/flask-app$(Build.BuildId).zip'
+    replaceExistingArchive: true
+- task: PublishBuildArtifacts@1
+  inputs:
+    PathtoPublish: '$(Build.ArtifactStagingDirectory)/flask-app$(Build.BuildId).zip'
+    ArtifactName: 'drop'
+    publishLocation: 'Container'
