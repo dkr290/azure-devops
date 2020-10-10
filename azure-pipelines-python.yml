@@ -19,7 +19,7 @@ stages:
     - task: UsePythonVersion@0
       inputs:
         versionSpec: '$(pythonVersion)'
-        addToPath: false
+        addToPath: true
         architecture: 'x64'
         
     - task: Bash@3
