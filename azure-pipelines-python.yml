@@ -10,8 +10,8 @@ stages:
   jobs:
   - job: Build_Flask_app
 
-    pool:
-      vmImage: 'onPremises'
+    pool: 'onPremises'
+      
     
 
 
