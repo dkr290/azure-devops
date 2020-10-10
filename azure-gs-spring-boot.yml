@@ -23,6 +23,7 @@ stages:
         mavenPomFile: 'src/gs-spring-boot/app/pom.xml'
         publishJUnitResults: true
         testResultsFiles: '**/surefire-reports/TEST-*.xml'
+        codeCoverageToolOption: 'JaCoCo'
         javaHomeOption: 'JDKVersion'
         mavenVersionOption: 'Default'
         mavenOptions: '-Xmx3072m'
