@@ -20,7 +20,7 @@ stages:
       inputs:
         versionSpec: '$(pythonVersion)'
         addToPath: true
-        architecture: 'x64'
+        
     - task: Bash@3
       inputs:
         targetType: 'inline'
