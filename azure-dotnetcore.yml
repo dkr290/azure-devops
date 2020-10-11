@@ -23,12 +23,12 @@ stages:
     - task: DotNetCoreCLI@2
       inputs:
         command: 'restore'
-        projects: '**/src/*.csproj'
+        projects: 'src/WebApp/*.csproj'
         feedsToUse: 'select'
     - task: DotNetCoreCLI@2
       inputs:
         command: 'build'
-        projects: '**/src/ *.csproj'
+        projects: 'src/WebApp/ *.csproj'
         arguments: '--configuration $(BuildConfiguration)'
     - task: DotNetCoreCLI@2
       inputs:
