@@ -28,7 +28,7 @@ stages:
     - task: DotNetCoreCLI@2
       inputs:
         command: 'build'
-        projects: 'src/WebApp/ *.csproj'
+        projects: 'src/WebApp/*.csproj'
         arguments: '--configuration $(BuildConfiguration)'
     - task: DotNetCoreCLI@2
       inputs:
