@@ -40,3 +40,19 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
+- stage: DeployToWebapp
+  jobs:
+  - deployment: DeployToWebapp
+    environment: Production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureRmWebAppDeployment@4
+            inputs:
+              ConnectionType: 'AzureRM'
+              azureSubscription: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
+              appType: 'webAppLinux'
+              WebAppName: 'javaapp1980'
+              packageForLinux: '$(System.DefaultWorkingDirectory)/_Build_Maven_app/drop/src/gs-spring-boot/app/target/gs-spring-boot-0.1.0.jar'
+              RuntimeStack: 'JAVA|8-jre8'
