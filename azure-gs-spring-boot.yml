@@ -42,17 +42,17 @@ stages:
         publishLocation: 'Container'
     - bash: ls -R  $(System.DefaultWorkingDirectory)
     - bash: ls -R  $(Build.ArtifactStagingDirectory)
-# - stage: DeployToWebapp
-#   jobs:
-#   - deployment: DeployToWebapp
-#     environment: Production
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - task: AzureWebApp@1
-#             inputs:
-#               azureSubscription: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
-#               appType: 'webAppLinux'
-#               appName: 'javaapp1980'
-#               package: '$(System.DefaultWorkingDirectory)/**/*.zip'
+- stage: DeployToWebapp
+  jobs:
+  - deployment: DeployToWebapp
+    environment: Production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
+              appType: 'webAppLinux'
+              appName: 'javaapp1980'
+              package: '$(Build.ArtifactStagingDirectory)/src/gs-spring-boot/app/target/gs-spring-boot-0.1.0.jar'
