@@ -48,5 +48,5 @@ stages:
               templateLocation: 'Linked artifact'
               csmFile: '$(Pipeline.Workspace)/drop/WebSiteSQLDatabase.json'
               csmParametersFile: '$(Pipeline.Workspace)/drop/WebSiteSQLDatabase.parameters.json'
-              overrideParameters: '-administratorLogin admin1 -administratorLoginPassword $(loginPassword)'
+              overrideParameters: '-administratorLogin $(AdminUser) -administratorLoginPassword $(loginPassword)'
               deploymentMode: 'Incremental'
