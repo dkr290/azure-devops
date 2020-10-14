@@ -45,3 +45,18 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
+- stage: Deploy
+  jobs:
+  - deployment: DeployToWebapp
+    environment: Production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
+              appType: 'webApp'
+              appName: 'dotnetcore-app80'
+              package: '$(Pipeline.Workspace)/drop/**/*.zip'
+              deploymentMethod: 'auto'
