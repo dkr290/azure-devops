@@ -29,3 +29,24 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
+- stage: Deploy
+  jobs:
+  - deployment: DeployArmTemplate
+    environment: Production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureResourceManagerTemplateDeployment@3
+            inputs:
+              deploymentScope: 'Resource Group'
+              azureResourceManagerConnection: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
+              subscriptionId: '5f7292bd-e975-43ef-aa61-1871cb2a573d'
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: 'AZURE-ARM'
+              location: 'East US'
+              templateLocation: 'Linked artifact'
+              csmFile: '$(Build.ArtifactStagingDirectory)/drop/WebSiteSQLDatabase.json'
+              csmParametersFile: '$(Build.ArtifactStagingDirectory)/drop/WebSiteSQLDatabase.parameters.json'
+              overrideParameters: '-administratorLogin admin1 -administratorLoginPassword LamiataSpaska23@'
+              deploymentMode: 'Incremental'
