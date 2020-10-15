@@ -1,0 +1,51 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+stages:
+
+- stage: Build
+  jobs:
+  - job: Build_Django_Mysql_ARM
+
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    variables:
+      buildConfiguration: 'Release'
+
+    steps:
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(system.defaultworkingdirectory)/src/Azure-Django-Postgres'
+        Contents: '**/*.json'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+- stage: DeployservicesARM
+  jobs:
+  - deployment: DeployArmTemplate
+    environment: Development
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureResourceManagerTemplateDeployment@3
+            inputs:
+              deploymentScope: 'Resource Group'
+              azureResourceManagerConnection: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
+              subscriptionId: '5f7292bd-e975-43ef-aa61-1871cb2a573d'
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: '$(ResourceGroupName)'
+              location: '$(Location)'
+              templateLocation: 'Linked artifact'
+              csmFile: '$(Pipeline.Workspace)/drop/djangoPostgres.json'
+              csmParametersFile: '$(Pipeline.Workspace)/drop/djangoPostgres.parameters.json'
+              overrideParameters: '-administratorLogin $(AdminUser) -administratorLoginPassword $(loginPassword) -siteName $(siteName)'
+              deploymentMode: 'Incremental'
