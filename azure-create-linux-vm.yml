@@ -1,0 +1,52 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger:
+- master
+
+stages:
+
+- stage: Build
+  jobs:
+  - job: Build_Linux_VM
+
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    variables:
+      buildConfiguration: 'Release'
+
+    steps:
+    - task: CopyFiles@2
+      inputs:
+        SourceFolder: '$(system.defaultworkingdirectory)/src/Azure-VM'
+        Contents: '**/*.json'
+        TargetFolder: '$(Build.ArtifactStagingDirectory)'
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+- stage: Deploy
+  jobs:
+  - deployment: DeployArmTemplate
+    environment: Production
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureResourceManagerTemplateDeployment@3
+            inputs:
+              deploymentScope: 'Resource Group'
+              azureResourceManagerConnection: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
+              subscriptionId: '5f7292bd-e975-43ef-aa61-1871cb2a573d'
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: '$(RG)'
+              location: '$(Location)'
+              templateLocation: 'Linked artifact'
+              csmFile: '$(Pipeline.Workspace)/drop/azure-linux-vm.json'
+              csmParametersFile: '$(Pipeline.Workspace)/drop/azure-linux-vm.parameters.json'
+              overrideParameters: '-vmName $(vmName) -adminUsername $(userName) -authenticationType $(authType) -adminPasswordOrKey $(password) -VmSize $(vmsize) -ubuntuOSVersion $(osVersion) -dnsLabelPrefix ($dnslabel) '
+              deploymentMode: 'Incremental'
