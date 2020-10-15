@@ -48,5 +48,5 @@ stages:
               templateLocation: 'Linked artifact'
               csmFile: '$(Pipeline.Workspace)/drop/azure-linux-vm.json'
               csmParametersFile: '$(Pipeline.Workspace)/drop/azure-linux-vm.parameters.json'
-              overrideParameters: '-vmName $(vmName) -adminUsername $(userName) -authenticationType $(authType) -adminPasswordOrKey $(password) -VmSize $(vmsize) -ubuntuOSVersion $(osVersion) -dnsLabelPrefix ($dnslabel) '
+              overrideParameters: '-vmName $(vmName) -adminUsername $(userName) -authenticationType $(authType) -adminPasswordOrKey $(password) -VmSize $(vmsize) -ubuntuOSVersion $(osVersion) -dnsLabelPrefix $(dnslabel) '
               deploymentMode: 'Incremental'
