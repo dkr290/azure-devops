@@ -88,16 +88,65 @@ stages:
               csmParametersFile: '$(Pipeline.Workspace)/drop/djangoPostgres.parameters.json'
               overrideParameters: '-administratorLogin $(AdminUser) -administratorLoginPassword $(loginPassword) -siteName $(siteName)'
               deploymentMode: 'Incremental'
-# - stage: UploadDjangoCode
-#   jobs:
-#   - deployment: DeployDjangoAppCode
-#     environment: Development
-#     dependsOn:
-#     - DeployservicesARM
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-          
+
+- stage: UploadDjangoCode
+  jobs:
+  - deployment:
+    environment: Development
+    dependsOn:
+    - DeployservicesARM
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureAppServiceSettings@1
+            inputs:
+              azureSubscription: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
+              appName: '$(siteName)'
+              resourceGroupName: '$(ResourceGroupName)'
+              appSettings: |
+                [
+                        {
+                          "name": "DJANGO_ENV",
+                          "value": "production",
+                          "slotSetting": false
+                        },
+                        {
+                          "name": "DBHOST",
+                          "value": "$(siteName)pgserver", 
+                          "slotSetting": false
+                        },
+                {
+                          "name": "DBNAME",
+                          "value": "$(siteName)database", 
+                          "slotSetting": false
+                        },
+                {
+                          "name": "DBUSER",
+                          "value": "$(AdminUser)", 
+                          "slotSetting": false
+                        },
+                {
+                          "name": "DBPASS",
+                          "value": "$(loginPassword)", 
+                          "slotSetting": false
+                        },
+                        
+                      ]
+  - deployment: DeployDjangoAppCode
+    environment: Development
+    dependsOn:
+    - DeployservicesARM
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
+              appType: 'webAppLinux'
+              appName: '$(siteName)'
+              package: '$(Pipeline.Workspace)/drop/djangoapp$(Build.BuildId).zip'
+              runtimeStack: 'PYTHON|3.8'
 
   
