@@ -11,9 +11,7 @@
       "administratorLoginPassword": {
         "value": "GEN-PASSWORD"
       },
-      "linuxFxVersion": {
-        "value": "PYTHON|3.8"
-    },
+      
     "alwaysOn": {
         "value": true
     }

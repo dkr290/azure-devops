@@ -133,6 +133,7 @@
             "name": "[variables('hostingPlanName')]",
             "type": "Microsoft.Web/serverfarms",
             "location": "[parameters('location')]",
+            "kind": "linux",
             "properties": {
                 "name": "[variables('hostingPlanName')]",
                 "workerSize": "1",
