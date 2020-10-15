@@ -129,7 +129,7 @@ stages:
                           "name": "DBPASS",
                           "value": "$(loginPassword)", 
                           "slotSetting": false
-                        },
+                        }
                         
                       ]
   - deployment: DeployDjangoAppCode
