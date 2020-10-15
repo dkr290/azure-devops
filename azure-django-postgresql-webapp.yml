@@ -70,9 +70,7 @@ stages:
   jobs:
   - deployment: DeployArmTemplate
     environment: Development
-    dependsOn: 
-    - BuildDjangoAPP
-    - BuildTemplate
+   
     strategy:
       runOnce:
         deploy:
