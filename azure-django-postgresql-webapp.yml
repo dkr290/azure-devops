@@ -91,7 +91,7 @@ stages:
 
 - stage: UploadDjangoCode
   jobs:
-  - deployment:
+  - deployment: ConfigDjangoEnvs
     environment: Development
     dependsOn:
     - DeployservicesARM
