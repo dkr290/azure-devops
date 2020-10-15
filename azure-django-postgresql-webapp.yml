@@ -28,6 +28,9 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
+
+- stage: BuildDjangoAPP
+  jobs:
   - job: Build_Django_App
 
     pool:
@@ -53,7 +56,7 @@ stages:
         workingDirectory: '$(System.DefaultWorkingDirectory)'
     - task: ArchiveFiles@2
       inputs:
-        rootFolderOrFile: '$(Build.SourcesDirectory)'
+        rootFolderOrFile: '$(Build.SourcesDirectory)/src/djangoapp/'
         includeRootFolder: false
         archiveType: 'zip'
         archiveFile: '$(Build.ArtifactStagingDirectory)/djangoapp$(Build.BuildId).zip'
