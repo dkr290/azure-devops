@@ -93,8 +93,7 @@ stages:
   jobs:
   - deployment: ConfigDjangoEnvs
     environment: Development
-    dependsOn:
-    - DeployservicesARM
+    
     strategy:
       runOnce:
         deploy:
@@ -136,7 +135,7 @@ stages:
   - deployment: DeployDjangoAppCode
     environment: Development
     dependsOn:
-    - DeployservicesARM
+    - ConfigDjangoEnvs
     strategy:
       runOnce:
         deploy:
