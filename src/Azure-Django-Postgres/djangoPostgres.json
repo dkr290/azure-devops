@@ -137,7 +137,8 @@
             "properties": {
                 "name": "[variables('hostingPlanName')]",
                 "workerSize": "1",
-                "numberOfWorkers": 0
+                "numberOfWorkers": 0,
+                "reserved": true
             },
             "sku": {
                 "Tier": "Standard",
