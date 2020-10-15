@@ -7,7 +7,7 @@ trigger:
 - master
 stages:
 
-- stage: Build
+- stage: BuildTemplate
   jobs:
   - job: Build_Django_Mysql_ARM
 
@@ -66,24 +66,40 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)/djangoapp$(Build.BuildId).zip'
         ArtifactName: 'drop'
         publishLocation: 'Container'
-# - stage: DeployservicesARM
-#   jobs:
-#   - deployment: DeployArmTemplate
-#     environment: Development
-#     strategy:
-#       runOnce:
-#         deploy:
-#           steps:
-#           - task: AzureResourceManagerTemplateDeployment@3
-#             inputs:
-#               deploymentScope: 'Resource Group'
-#               azureResourceManagerConnection: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
-#               subscriptionId: '5f7292bd-e975-43ef-aa61-1871cb2a573d'
-#               action: 'Create Or Update Resource Group'
-#               resourceGroupName: '$(ResourceGroupName)'
-#               location: '$(Location)'
-#               templateLocation: 'Linked artifact'
-#               csmFile: '$(Pipeline.Workspace)/drop/djangoPostgres.json'
-#               csmParametersFile: '$(Pipeline.Workspace)/drop/djangoPostgres.parameters.json'
-#               overrideParameters: '-administratorLogin $(AdminUser) -administratorLoginPassword $(loginPassword) -siteName $(siteName)'
-#               deploymentMode: 'Incremental'
+- stage: DeployservicesARM
+  jobs:
+  - deployment: DeployArmTemplate
+    environment: Development
+    dependsOn: 
+    - BuildDjangoAPP
+    - BuildTemplate
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureResourceManagerTemplateDeployment@3
+            inputs:
+              deploymentScope: 'Resource Group'
+              azureResourceManagerConnection: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
+              subscriptionId: '5f7292bd-e975-43ef-aa61-1871cb2a573d'
+              action: 'Create Or Update Resource Group'
+              resourceGroupName: '$(ResourceGroupName)'
+              location: '$(Location)'
+              templateLocation: 'Linked artifact'
+              csmFile: '$(Pipeline.Workspace)/drop/djangoPostgres.json'
+              csmParametersFile: '$(Pipeline.Workspace)/drop/djangoPostgres.parameters.json'
+              overrideParameters: '-administratorLogin $(AdminUser) -administratorLoginPassword $(loginPassword) -siteName $(siteName)'
+              deploymentMode: 'Incremental'
+- stage: UploadDjangoCode
+  jobs:
+  - deployment: DeployDjangoAppCode
+    environment: Development
+    dependsOn:
+    - DeployservicesARM
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          
+
+  
