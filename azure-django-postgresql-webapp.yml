@@ -28,24 +28,62 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
-- stage: DeployservicesARM
-  jobs:
-  - deployment: DeployArmTemplate
-    environment: Development
-    strategy:
-      runOnce:
-        deploy:
-          steps:
-          - task: AzureResourceManagerTemplateDeployment@3
-            inputs:
-              deploymentScope: 'Resource Group'
-              azureResourceManagerConnection: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
-              subscriptionId: '5f7292bd-e975-43ef-aa61-1871cb2a573d'
-              action: 'Create Or Update Resource Group'
-              resourceGroupName: '$(ResourceGroupName)'
-              location: '$(Location)'
-              templateLocation: 'Linked artifact'
-              csmFile: '$(Pipeline.Workspace)/drop/djangoPostgres.json'
-              csmParametersFile: '$(Pipeline.Workspace)/drop/djangoPostgres.parameters.json'
-              overrideParameters: '-administratorLogin $(AdminUser) -administratorLoginPassword $(loginPassword) -siteName $(siteName)'
-              deploymentMode: 'Incremental'
+  - job: Build_Django_App
+
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    variables:
+      buildConfiguration: 'Release'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.x'
+        addToPath: true
+        architecture: 'x64'
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          python3 -m venv venv
+          source venv/bin/activate
+          python -m pip install --upgrade pip
+          pip install setup
+          pip install -r src/djangoapp/requirements.txt
+          python src/djangoapp/manage.py migrate
+          python src/djangoapp/manage.py createsuperuser
+          python src/djangoapp/manage.py  runserver
+        workingDirectory: '$(System.DefaultWorkingDirectory)'
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/djangoapp$(Build.BuildId).zip'
+        replaceExistingArchive: true
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/djangoapp$(Build.BuildId).zip'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
+# - stage: DeployservicesARM
+#   jobs:
+#   - deployment: DeployArmTemplate
+#     environment: Development
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
+#           - task: AzureResourceManagerTemplateDeployment@3
+#             inputs:
+#               deploymentScope: 'Resource Group'
+#               azureResourceManagerConnection: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
+#               subscriptionId: '5f7292bd-e975-43ef-aa61-1871cb2a573d'
+#               action: 'Create Or Update Resource Group'
+#               resourceGroupName: '$(ResourceGroupName)'
+#               location: '$(Location)'
+#               templateLocation: 'Linked artifact'
+#               csmFile: '$(Pipeline.Workspace)/drop/djangoPostgres.json'
+#               csmParametersFile: '$(Pipeline.Workspace)/drop/djangoPostgres.parameters.json'
+#               overrideParameters: '-administratorLogin $(AdminUser) -administratorLoginPassword $(loginPassword) -siteName $(siteName)'
+#               deploymentMode: 'Incremental'
