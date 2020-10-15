@@ -7,7 +7,7 @@ trigger:
 - master
 stages:
 
-- stage: Build
+- stage: BuildTemplate
   jobs:
   - job: Build_Django_Mysql_ARM
 
@@ -28,10 +28,49 @@ stages:
         PathtoPublish: '$(Build.ArtifactStagingDirectory)'
         ArtifactName: 'drop'
         publishLocation: 'Container'
+
+- stage: BuildDjangoAPP
+  jobs:
+  - job: Build_Django_App
+
+    pool:
+      vmImage: 'ubuntu-latest'
+
+    variables:
+      buildConfiguration: 'Release'
+    steps:
+    - task: UsePythonVersion@0
+      inputs:
+        versionSpec: '3.x'
+        addToPath: true
+        architecture: 'x64'
+    - task: Bash@3
+      inputs:
+        targetType: 'inline'
+        script: |
+          python3 -m venv venv
+          source venv/bin/activate
+          python -m pip install --upgrade pip
+          pip install setup
+          pip install -r src/djangoapp/requirements.txt
+        workingDirectory: '$(System.DefaultWorkingDirectory)'
+    - task: ArchiveFiles@2
+      inputs:
+        rootFolderOrFile: '$(Build.SourcesDirectory)/src/djangoapp/'
+        includeRootFolder: false
+        archiveType: 'zip'
+        archiveFile: '$(Build.ArtifactStagingDirectory)/djangoapp$(Build.BuildId).zip'
+        replaceExistingArchive: true
+    - task: PublishBuildArtifacts@1
+      inputs:
+        PathtoPublish: '$(Build.ArtifactStagingDirectory)/djangoapp$(Build.BuildId).zip'
+        ArtifactName: 'drop'
+        publishLocation: 'Container'
 - stage: DeployservicesARM
   jobs:
   - deployment: DeployArmTemplate
     environment: Development
+   
     strategy:
       runOnce:
         deploy:
@@ -49,3 +88,64 @@ stages:
               csmParametersFile: '$(Pipeline.Workspace)/drop/djangoPostgres.parameters.json'
               overrideParameters: '-administratorLogin $(AdminUser) -administratorLoginPassword $(loginPassword) -siteName $(siteName)'
               deploymentMode: 'Incremental'
+
+- stage: UploadDjangoCode
+  jobs:
+  - deployment: ConfigDjangoEnvs
+    environment: Development
+    
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureAppServiceSettings@1
+            inputs:
+              azureSubscription: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
+              appName: '$(siteName)'
+              resourceGroupName: '$(ResourceGroupName)'
+              appSettings: |
+                [
+                        {
+                          "name": "DJANGO_ENV",
+                          "value": "production",
+                          "slotSetting": false
+                        },
+                        {
+                          "name": "DBHOST",
+                          "value": "$(siteName)pgserver", 
+                          "slotSetting": false
+                        },
+                {
+                          "name": "DBNAME",
+                          "value": "$(siteName)database", 
+                          "slotSetting": false
+                        },
+                {
+                          "name": "DBUSER",
+                          "value": "$(AdminUser)", 
+                          "slotSetting": false
+                        },
+                {
+                          "name": "DBPASS",
+                          "value": "$(loginPassword)", 
+                          "slotSetting": false
+                        }
+                        
+                      ]
+  - deployment: DeployDjangoAppCode
+    environment: Development
+    dependsOn:
+    - ConfigDjangoEnvs
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: AzureWebApp@1
+            inputs:
+              azureSubscription: 'FreeOneYear(5f7292bd-e975-43ef-aa61-1871cb2a573d)'
+              appType: 'webAppLinux'
+              appName: '$(siteName)'
+              package: '$(Pipeline.Workspace)/drop/djangoapp$(Build.BuildId).zip'
+              runtimeStack: 'PYTHON|3.8'
+
+  
