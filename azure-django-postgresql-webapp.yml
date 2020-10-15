@@ -90,16 +90,16 @@ stages:
               csmParametersFile: '$(Pipeline.Workspace)/drop/djangoPostgres.parameters.json'
               overrideParameters: '-administratorLogin $(AdminUser) -administratorLoginPassword $(loginPassword) -siteName $(siteName)'
               deploymentMode: 'Incremental'
-- stage: UploadDjangoCode
-  jobs:
-  - deployment: DeployDjangoAppCode
-    environment: Development
-    dependsOn:
-    - DeployservicesARM
-    strategy:
-      runOnce:
-        deploy:
-          steps:
+# - stage: UploadDjangoCode
+#   jobs:
+#   - deployment: DeployDjangoAppCode
+#     environment: Development
+#     dependsOn:
+#     - DeployservicesARM
+#     strategy:
+#       runOnce:
+#         deploy:
+#           steps:
           
 
   
