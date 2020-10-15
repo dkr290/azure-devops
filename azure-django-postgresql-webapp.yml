@@ -50,9 +50,6 @@ stages:
           python -m pip install --upgrade pip
           pip install setup
           pip install -r src/djangoapp/requirements.txt
-          python src/djangoapp/manage.py migrate
-          python src/djangoapp/manage.py createsuperuser
-          python src/djangoapp/manage.py  runserver
         workingDirectory: '$(System.DefaultWorkingDirectory)'
     - task: ArchiveFiles@2
       inputs:
