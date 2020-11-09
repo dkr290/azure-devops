@@ -50,5 +50,5 @@ stages:
               templateLocation: 'Linked artifact'
               csmFile: '$(Pipeline.Workspace)/drop/OL7XInstall.json'
               csmParametersFile: '$(Pipeline.Workspace)/drop/OL7XInstall.parameters.json'
-              overrideParameters: '-location $(location) -networkInterfaceName $(networkInterfaceName) -subnetName $(subnetName) -virtualNetworkId $(virtualNetworkId) -publicIpAddressName $(publicIpAddressName) -publicIpAddressType $(publicIpAddressType) -publicIpAddressSku $(publicIpAddressSku) -virtualMachineName $(virtualMachineName) -virtualMachineComputerName $(virtualMachineComputerName) -virtualMachineRG $(virtualMachineRG) -osDiskType $(osDiskType) -virtualMachineSize $(virtualMachineSize) -adminUsername $(adminUsername) -adminPassword $(adminPassword) -zone $(zone)'
+              overrideParameters: '-location $(location) -networkInterfaceName $(networkInterfaceName) -subnetName $(subnetName) -virtualNetworkId $(virtualNetworkId) -virtualMachineName $(virtualMachineName) -virtualMachineComputerName $(virtualMachineComputerName) -virtualMachineRG $(virtualMachineRG) -osDiskType $(osDiskType) -virtualMachineSize $(virtualMachineSize) -adminUsername $(adminUsername) -adminPassword $(adminPassword) -zone $(zone)'
               deploymentMode: 'Incremental'
