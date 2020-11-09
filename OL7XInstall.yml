@@ -13,7 +13,7 @@ stages:
 
 - stage: Build
   jobs:
-  - job: Publish OL7X Template
+  - job: PublishOL7XTemplate
 
     pool:
       vmImage: 'ubuntu-latest'
