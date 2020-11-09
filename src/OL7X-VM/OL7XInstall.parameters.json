@@ -1,0 +1,51 @@
+{
+    "$schema": "https://schema.management.azure.com/schemas/2015-01-01/deploymentParameters.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {
+        "location": {
+            "value": "Azure_DevopsVar"
+        },
+        "networkInterfaceName": {
+            "value": "Azure_DevopsVar"
+        },
+        "subnetName": {
+            "value": "Azure_DevopsVar"
+        },
+        "virtualNetworkId": {
+            "value": "Azure_DevopsVar"
+        },
+        "publicIpAddressName": {
+            "value": "Azure_DevopsVar"
+        },
+        "publicIpAddressType": {
+            "value": "Azure_DevopsVar"
+        },
+        "publicIpAddressSku": {
+            "value": "Azure_DevopsVar"
+        },
+        "virtualMachineName": {
+            "value": "Azure_DevopsVar"
+        },
+        "virtualMachineComputerName": {
+            "value": "Azure_DevopsVar"
+        },
+        "virtualMachineRG": {
+            "value": "Azure_DevopsVar"
+        },
+        "osDiskType": {
+            "value": "Azure_DevopsVar"
+        },
+        "virtualMachineSize": {
+            "value": "Azure_DevopsVar"
+        },
+        "adminUsername": {
+            "value": "Azure_DevopsVar"
+        },
+        "adminPassword": {
+            "value": null
+        },
+        "zone": {
+            "value": "1"
+        }
+    }
+}
