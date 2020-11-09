@@ -34,7 +34,7 @@ stages:
         publishLocation: 'Container'
 - stage: Deploy
   jobs:
-  - deployment: DeployArmTemplate
+  - deployment: DeployOL7XArmTemplate
     
     strategy:
       runOnce:
