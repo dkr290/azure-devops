@@ -14,15 +14,7 @@
         "virtualNetworkId": {
             "value": "Azure_DevopsVar"
         },
-        "publicIpAddressName": {
-            "value": "Azure_DevopsVar"
-        },
-        "publicIpAddressType": {
-            "value": "Azure_DevopsVar"
-        },
-        "publicIpAddressSku": {
-            "value": "Azure_DevopsVar"
-        },
+        
         "virtualMachineName": {
             "value": "Azure_DevopsVar"
         },
@@ -42,7 +34,7 @@
             "value": "Azure_DevopsVar"
         },
         "adminPassword": {
-            "value": null
+            "value": "Azure_DevopsVar"
         },
         "zone": {
             "value": "1"
