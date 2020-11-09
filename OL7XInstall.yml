@@ -13,7 +13,7 @@ stages:
 
 - stage: Build
   jobs:
-  - job: Publish OL7X Template
+  - job: PublishOL7XTemplate
 
     pool:
       vmImage: 'ubuntu-latest'
@@ -35,6 +35,7 @@ stages:
 - stage: Deploy
   jobs:
   - deployment: DeployOL7XArmTemplate
+    environment: UAT
     
     strategy:
       runOnce:
