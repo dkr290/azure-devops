@@ -22,11 +22,12 @@ pool:
             inputs:
               targetType: 'inline'
               script: |
-                
                 if [ ! -d /ansible/repo ]
                 then
-                   mkdir /ansible/repo
+                 mkdir /ansible/repo
                 fi
-                cd /ansible/repo
-              
-                git clone https://github.com/dkr290/ansible-devops.git
+                 cd /ansible/repo
+                   
+                 git clone https://github.com/dkr290/ansible-devops.git
+                
+               
