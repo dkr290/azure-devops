@@ -23,9 +23,9 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                if [ ! -d /ansible/repo ]
+                if [ ! -d /home/azagent/ansible ]
                 then
-                 sudo mkdir -p /ansible/repo
+                mkdir -p /home/azagent/ansible
                 fi
                  cd /ansible/repo
                    
