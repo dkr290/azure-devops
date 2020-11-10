@@ -6,8 +6,6 @@
 trigger: none
 
 
-pool:
-  vmImage: 'ubuntu-latest'
 
 stages:
 - stage: Deploy
@@ -19,6 +17,7 @@ stages:
       runOnce:
         deploy:
           steps:
+
           - task: Bash@3
             inputs:
               targetType: 'inline'
