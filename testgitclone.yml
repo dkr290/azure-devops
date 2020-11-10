@@ -1,0 +1,32 @@
+# Starter pipeline
+# Start with a minimal pipeline that you can customize to build and deploy your code.
+# Add steps that build, run tests, deploy, and more:
+# https://aka.ms/yaml
+
+trigger: none
+
+
+pool:
+  vmImage: 'ubuntu-latest'
+
+- stage: Deploy
+  jobs:
+  - deployment: clone_git_repo
+    environment: TestDeploy
+    
+    strategy:
+      runOnce:
+        deploy:
+          steps:
+          - task: Bash@3
+            inputs:
+              targetType: 'inline'
+              script: |
+                
+                if [ ! -d /ansible/repo ]
+                then
+                   mkdir /ansible/repo
+                fi
+                cd /ansible/repo
+              
+                git clone https://github.com/dkr290/ansible-devops.git
