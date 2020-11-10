@@ -23,12 +23,12 @@ stages:
             inputs:
               targetType: 'inline'
               script: |
-                if [ ! -d /home/azagent/ansible ]
-                then
-                mkdir -p /home/azagent/ansible
-                fi
-                 cd /ansible/repo
+               # if [ ! -d /home/azagent/ansible ]
+               # then
+               # mkdir -p /home/azagent/ansible
+               # fi
+                # cd /ansible/repo
                    
-                 git clone https://github.com/dkr290/ansible-devops.git
-                
+               #  git clone https://github.com/dkr290/ansible-devops.git
+                hostname
                
